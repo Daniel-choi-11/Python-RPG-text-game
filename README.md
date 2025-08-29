@@ -44,7 +44,7 @@ python rpg_game.py
 - **슬라임**: 약한 적, 초보자 연습용
 - **고블린**: 보통 난이도
 - **거인**: 높은 체력과 공격력
-- **드래곤**: 강한 공격력
+- **드래곤**: 강한 능력치, 높은 난이도
 
 ## 구현 내용
 
@@ -57,7 +57,7 @@ python rpg_game.py
 ## 파일 구조
 
 ```
-simple-rpg-game/
+Python-RPG-text-game/
 ├── rpg_game.py    # 메인 게임 파일
 └── README.md      # 설명서
 ```
