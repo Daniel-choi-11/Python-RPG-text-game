@@ -3,7 +3,6 @@
 파이썬 기초 문법을 익히며 만든 텍스트 기반 RPG 게임입니다.
 
 ![Python](https://img.shields.io/badge/Python-3.6+-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 ## 소개
 
