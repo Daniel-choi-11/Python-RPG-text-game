@@ -1,5 +1,6 @@
 import os
 
+
 def clear_screen():
     if os.name == 'nt':
         os.system('cls')
@@ -7,6 +8,7 @@ def clear_screen():
         os.system('clear')
 
 
+# 게임 데이터
 # 1. 체력(1-100) 2. 공격력(1-100) 3. 방어력(1-100) 4. 속도(1-5)
 jobs = {
     "전사": (70, 60, 60, 3),
@@ -25,6 +27,8 @@ environment = {
     "드래곤": (500, 50, 30, 5),
 }
 
+
+# 캐릭터 선택
 print()
 print("🎮 캐릭터 목록 🎮")
 print()
@@ -51,7 +55,8 @@ print("💡 HP=체력, ATK=공격력, DEF=방어력, SPD=공격속도")
 print()
 print()
 print("4 명의 캐릭터중 하나를 골라주세요!")
-choice = input("1~4 중 하나를 선택해주세요 (번호입력):")
+
+choice = input("1~4 중 하나를 선택해주세요 (번호입력): ")
 
 if choice == "1":
     print("전사를 선택하셨습니다")
@@ -71,6 +76,7 @@ else:
 
 clear_screen()
 
+# 플레이어 정보 설정
 hp, attack, defense, speed = jobs[job]
 player["job"] = job
 player["hp"] = hp
@@ -79,7 +85,8 @@ player["attack"] = attack
 player["defense"] = defense
 player["speed"] = speed
 
-user = input("유저 이름을 입력해주세요:")
+user = input("유저 이름을 입력해주세요: ")
+
 print()
 print(f"✨ {user} 캐릭터 생성 완료! ✨")
 print("==========================================")
@@ -91,6 +98,8 @@ print(f"속도: {player['speed']}")
 print("==========================================")
 input("\nEnter를 눌러 게임을 시작하세요...")
 
+
+# 게임 메인 루프
 while player["hp"] > 0:
     clear_screen()
     
@@ -110,6 +119,7 @@ while player["hp"] > 0:
     menu_choice = input("선택하세요: ")
     
     if menu_choice == "1":
+        # 상태 확인
         clear_screen()
         print(f"=== {user}의 상태 ===")
         print(f"체력: {player['hp']}/{player['max_hp']}")
@@ -120,6 +130,7 @@ while player["hp"] > 0:
         input("Enter를 눌러 메뉴로 돌아가기...")
         
     elif menu_choice in ["2", "3", "4", "5"]:
+        # 전투
         if player["hp"] <= 0:
             print("체력이 부족합니다! 먼저 휴식을 취하세요.")
             input("Enter를 눌러 계속...")
@@ -127,24 +138,29 @@ while player["hp"] > 0:
         
         clear_screen()
         
+        # 몬스터 선택
         monster_list = ["슬라임", "고블린", "거인", "드래곤"]
         monster_name = monster_list[int(menu_choice) - 2]
         
         print(f"⚔️ {monster_name}이(가) 나타났다!")
         
+        # 몬스터 정보
         monster_hp, monster_attack, monster_defense, monster_speed = environment[monster_name]
         current_monster_hp = monster_hp
         
         print(f"{monster_name} - HP:{monster_hp}, ATK:{monster_attack}, DEF:{monster_defense}, SPD:{monster_speed}")
         
+        # 속도로 선공 결정
         if player["speed"] >= monster_speed:
             print(f"{user}가 먼저 공격합니다")
             playerfirstatt = True
         else:
             print(f"{monster_name}이 먼저 공격합니다")
             playerfirstatt = False
+            
         input("Enter를 눌러서 진행...")
         
+        # 전투 루프
         while current_monster_hp > 0 and player["hp"] > 0:
             clear_screen()
             
@@ -157,52 +173,74 @@ while player["hp"] > 0:
             input("Enter를 눌러 공격...")
             
             if playerfirstatt:
+                # 플레이어 먼저 공격
                 print(f"{user}의 선공!")
                 input("공격을 하려면 Enter를 눌러주세요...")
-                player_damage= max(1,player["attack"]-monster_defense)
-                current_monster_hp-=player_damage
-                print(f"{user}의 공격 데미지:{player_damage}!")
+                
+                player_damage = max(1, player["attack"] - monster_defense)
+                current_monster_hp -= player_damage
+                print(f"{user}의 공격 데미지: {player_damage}!")
+                
                 if current_monster_hp <= 0:
                     print(f"{monster_name}을 물리쳤습니다!")
                     input("Enter를 눌러 계속...")
                     break
-                monster_damage= max(1,monster_attack-player["defense"])
-                player["hp"]-=monster_damage
-                print(f"{monster_name}의 공격 데미지:{monster_damage}!")
+                
+                # 몬스터 반격
+                monster_damage = max(1, monster_attack - player["defense"])
+                player["hp"] -= monster_damage
+                print(f"{monster_name}의 공격 데미지: {monster_damage}!")
                 
             else:
+                # 몬스터 먼저 공격
                 print(f"{monster_name}의 선공!")
-                monster_damage= max(1,monster_attack-player["defense"])
-                player["hp"]-=monster_damage
-                print(f"{monster_name}의 공격 데미지:{monster_damage}")
+                
+                monster_damage = max(1, monster_attack - player["defense"])
+                player["hp"] -= monster_damage
+                print(f"{monster_name}의 공격 데미지: {monster_damage}")
+                
                 if player["hp"] <= 0:
                     print(f"{user}님의 패배")
                     print("다시 하시려면 재실행 해주세요")
                     input("Enter를 눌러 종료...")
                     break
+                
+                # 플레이어 반격
+                player_damage = max(1, player["attack"] - monster_defense)
+                current_monster_hp -= player_damage
+                print(f"{user}의 공격 데미지: {player_damage}!")
+                
             input("Enter를 눌러 진행")
-    elif menu_choice=="6":
+            
+    elif menu_choice == "6":
+        # 휴식
         clear_screen()
         input("Enter를 눌러 회복...")
-        player["hp"]=player["max_hp"]        
+        player["hp"] = player["max_hp"]        
         print(f"회복완료! HP: {player['hp']}/{player['max_hp']}")
         input("Enter를 눌러 계속...")
-    elif menu_choice==7:
+        
+    elif menu_choice == "7":
+        # 게임 종료
         clear_screen()
-        choice_end=input("1= 게임종료 /n 2= 메뉴로 돌아가기")
-        if choice_end=="1":
+        choice_end = input("1= 게임종료 \n2= 메뉴로 돌아가기: ")
+        
+        if choice_end == "1":
             clear_screen()
             print("게임을 종료합니다")
             break
-        elif choice_end=="2":
+        elif choice_end == "2":
             continue
         else:
             print("잘못된 선택입니다. 메뉴로 돌아갑니다.")
             input("Enter를 눌러 계속...")
             continue
+            
     else:
         clear_screen()
         print("아직 지원하지않는 선택지입니다")
         input("Enter를 눌러 계속...")
+
+
 clear_screen()
 print("게임 종료")
