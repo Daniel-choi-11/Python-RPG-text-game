@@ -6,6 +6,7 @@ def clear_screen():
     else:
         os.system('clear')
 
+
 # 1. 체력(1-100) 2. 공격력(1-100) 3. 방어력(1-100) 4. 속도(1-5)
 jobs = {
     "전사": (70, 60, 60, 3),
@@ -154,3 +155,54 @@ while player["hp"] > 0:
             print("==========================================")
             
             input("Enter를 눌러 공격...")
+            
+            if playerfirstatt:
+                print(f"{user}의 선공!")
+                input("공격을 하려면 Enter를 눌러주세요...")
+                player_damage= max(1,player["attack"]-monster_defense)
+                current_monster_hp-=player_damage
+                print(f"{user}의 공격 데미지:{player_damage}!")
+                if current_monster_hp <= 0:
+                    print(f"{monster_name}을 물리쳤습니다!")
+                    input("Enter를 눌러 계속...")
+                    break
+                monster_damage= max(1,monster_attack-player["defense"])
+                player["hp"]-=monster_damage
+                print(f"{monster_name}의 공격 데미지:{monster_damage}!")
+                
+            else:
+                print(f"{monster_name}의 선공!")
+                monster_damage= max(1,monster_attack-player["defense"])
+                player["hp"]-=monster_damage
+                print(f"{monster_name}의 공격 데미지:{monster_damage}")
+                if player["hp"] <= 0:
+                    print(f"{user}님의 패배")
+                    print("다시 하시려면 재실행 해주세요")
+                    input("Enter를 눌러 종료...")
+                    break
+            input("Enter를 눌러 진행")
+    elif menu_choice=="6":
+        clear_screen()
+        input("Enter를 눌러 회복...")
+        player["hp"]=player["max_hp"]        
+        print(f"회복완료! HP: {player['hp']}/{player['max_hp']}")
+        input("Enter를 눌러 계속...")
+    elif menu_choice==7:
+        clear_screen()
+        choice_end=input("1= 게임종료 /n 2= 메뉴로 돌아가기")
+        if choice_end=="1":
+            clear_screen()
+            print("게임을 종료합니다")
+            break
+        elif choice_end=="2":
+            continue
+        else:
+            print("잘못된 선택입니다. 메뉴로 돌아갑니다.")
+            input("Enter를 눌러 계속...")
+            continue
+    else:
+        clear_screen()
+        print("아직 지원하지않는 선택지입니다")
+        input("Enter를 눌러 계속...")
+clear_screen()
+print("게임 종료")
