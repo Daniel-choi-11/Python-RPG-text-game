@@ -21,12 +21,20 @@ player = {}
 
 # 1. 체력 2. 공격력 3. 방어력 4. 속도(1-10)
 environment = {
-    "슬라임": (60, 15, 5, 1),
-    "고블린": (100, 35, 5, 3),
-    "거인": (500, 60, 0, 2),
-    "드래곤": (750, 90, 30, 5),
+    "슬라임": (60, 25, 5, 2),
+    "고블린": (100, 50, 10, 5),
+    "거인": (500, 80, 10, 3),
+    "드래곤": (750, 100, 80, 9),
 }
 
+# 한계
+
+STAT_LIMITS = {
+    "max_hp_limit": 1000,
+    "attack_limit": 700,
+    "defense_limit": 500,
+    "speed_limit": 10
+}
 
 # 캐릭터 선택
 clear_screen()
@@ -102,6 +110,10 @@ print(f"방어력: {player['defense']}")
 print(f"속도: {player['speed']}")
 print("==========================================")
 input("\nEnter를 눌러 게임을 시작하세요...")
+
+
+
+
 
 
 # 게임 메인 루프
@@ -190,25 +202,29 @@ while player["hp"] > 0:
                     print(f"{monster_name}을 물리쳤습니다!")
                     # 몬스터 승리 보상
                     if monster_name=="슬라임":
-                        print("체력:+1 방어력: +1 늘어났습니다")
-                        player["defense"]+=1
-                        player["max_hp"]+=1
-                        player["hp"]+=1
+                        if player["attack","defense","max_hp"]<STAT_LIMITS["attack_limit","defense_limit","max_hp_limit"]:
+                            print("체력:+1 방어력: +1 늘어났습니다")
+                            player["defense"]+=1
+                            player["max_hp"]+=1
+                            player["hp"]+=1
                     if monster_name=="고블린":
-                        print("공격력: +1 늘어났습니다")
-                        player["attack"]+=1
+                        if player["attack","defense","max_hp"]<STAT_LIMITS["attack_limit","defense_limit","max_hp_limit"]:
+                            print("공격력: +1 늘어났습니다")
+                            player["attack"]+=1
                     if monster_name=="거인":
-                        print("공격력: +3, 체력: +5, 방어력: +3 늘어났습니다")
-                        player["defense"]+=3
-                        player["attack"]+=3
-                        player["max_hp"]+=5
-                        player["hp"]+=5
+                        if player["attack","defense","max_hp"]<STAT_LIMITS["attack_limit","defense_limit","max_hp_limit"]:
+                            print("공격력: +3, 체력: +5, 방어력: +3 늘어났습니다")
+                            player["defense"]+=3
+                            player["attack"]+=3
+                            player["max_hp"]+=5
+                            player["hp"]+=5
                     if monster_name=="드래곤":
-                        print("공격력: +5, 체력: +5, 방어력: +5 늘어났습니다")
-                        player["defense"]+=5
-                        player["attack"]+=5
-                        player["max_hp"]+=5
-                        player["hp"]+=5
+                        if player["attack","defense","max_hp"]<STAT_LIMITS["attack_limit","defense_limit","max_hp_limit"]:
+                            print("공격력: +5, 체력: +5, 방어력: +5 늘어났습니다")
+                            player["attack"]+=5
+                            player["defense"]+=5
+                            player["max_hp"]+=5
+                            player["hp"]+=5
                     input("Enter를 눌러 계속...")
                     break
                 
