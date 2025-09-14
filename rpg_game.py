@@ -14,21 +14,22 @@ jobs = {
     "전사": (70, 60, 60, 3),
     "도적": (35, 90, 20, 5),
     "궁수": (55, 75, 40, 4),
-    "방패병": (100, 50, 90, 1)
+    "방패병": (100, 50, 70, 1)
 }
 
 player = {}
 
 # 1. 체력 2. 공격력 3. 방어력 4. 속도(1-10)
 environment = {
-    "슬라임": (10, 5, 5, 1),
-    "고블린": (20, 10, 5, 3),
-    "거인": (400, 40, 0, 2),
-    "드래곤": (500, 50, 30, 5),
+    "슬라임": (60, 15, 5, 1),
+    "고블린": (100, 35, 5, 3),
+    "거인": (500, 60, 0, 2),
+    "드래곤": (750, 90, 30, 5),
 }
 
 
 # 캐릭터 선택
+clear_screen()
 print()
 print("🎮 캐릭터 목록 🎮")
 print()
@@ -187,6 +188,27 @@ while player["hp"] > 0:
                 
                 if current_monster_hp <= 0:
                     print(f"{monster_name}을 물리쳤습니다!")
+                    # 몬스터 승리 보상
+                    if monster_name=="슬라임":
+                        print("체력:+1 방어력: +1 늘어났습니다")
+                        player["defense"]+=1
+                        player["max_hp"]+=1
+                        player["hp"]+=1
+                    if monster_name=="고블린":
+                        print("공격력: +1 늘어났습니다")
+                        player["attack"]+=1
+                    if monster_name=="거인":
+                        print("공격력: +3, 체력: +5, 방어력: +3 늘어났습니다")
+                        player["defense"]+=3
+                        player["attack"]+=3
+                        player["max_hp"]+=5
+                        player["hp"]+=5
+                    if monster_name=="드래곤":
+                        print("공격력: +5, 체력: +5, 방어력: +5 늘어났습니다")
+                        player["defense"]+=5
+                        player["attack"]+=5
+                        player["max_hp"]+=5
+                        player["hp"]+=5
                     input("Enter를 눌러 계속...")
                     break
                 
@@ -213,8 +235,9 @@ while player["hp"] > 0:
                 player_damage = max(1, player["attack"] - monster_defense)
                 current_monster_hp -= player_damage
                 print(f"{user}의 공격 데미지: {player_damage}!")
-                
+            
             input("Enter를 눌러 진행")
+            
             
     elif menu_choice == "6":
         # 휴식
